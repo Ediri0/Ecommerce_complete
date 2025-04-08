@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es5", 
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true, // Permite importar módulos ESM como CommonJS
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "commonjs", // Usa CommonJS para Jest
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx" // Configuración para React
+  },
+  "include": [
+    "src"
+  ]
+}
