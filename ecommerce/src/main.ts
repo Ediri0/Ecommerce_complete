@@ -2,14 +2,15 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs';
+import * as path from 'path';
 import helmet from 'helmet';
 import * as csurf from 'csurf';
-import * as cookieParser from 'cookie-parser'; // Import cookie-parser
+import * as cookieParser from 'cookie-parser';
+import * as express from 'express'; // Importa express
 
 async function bootstrap() {
   let httpsOptions: { key: Buffer; cert: Buffer } | undefined = undefined;
 
-  // Check if the certificate files exist
   const keyPath = './certs/key.pem';
   const certPath = './certs/cert.pem';
   if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
@@ -27,36 +28,39 @@ async function bootstrap() {
   const port = configService.get<number>('PORT') ?? 3000;
 
   app.enableCors({
-    origin: 'http://localhost:3000', // Ensure this matches the frontend origin
+    origin: 'http://localhost:3000',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Allow credentials (cookies)
+    credentials: true,
   });
 
-  app.use(cookieParser()); // Ensure cookie-parser is used before csurf
+  app.use(cookieParser());
   app.use(helmet());
   app.use(
     csurf({
       cookie: {
-        httpOnly: true, // Ensure the cookie is HTTP-only
-        secure: !!httpsOptions, // Set to true if using HTTPS
-        sameSite: 'strict', // Prevent CSRF attacks from other origins
+        httpOnly: true,
+        secure: !!httpsOptions,
+        sameSite: 'strict',
       },
     }),
   );
 
+  // Sirve archivos estáticos desde la carpeta "public/images"
+  app.use('/images', express.static(path.join(__dirname, '../public/images')));
+
   app.use((req, res, next) => {
     try {
       const csrfToken = req.csrfToken();
-      res.cookie('XSRF-TOKEN', csrfToken); // Set CSRF token in cookies
-      res.setHeader('X-CSRF-TOKEN', csrfToken); // Expose CSRF token in a custom header
-      console.log('Generated CSRF Token:', csrfToken); // Debugging CSRF token
+      res.cookie('XSRF-TOKEN', csrfToken);
+      res.setHeader('X-CSRF-TOKEN', csrfToken);
+      console.log('Generated CSRF Token:', csrfToken);
     } catch (error) {
       console.error('Error generating CSRF token:', error.message);
     }
     res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-    res.setHeader('X-XSS-Protection', '0'); // Deprecated, consider removing in the future
+    res.setHeader('X-XSS-Protection', '0');
     res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
     res.setHeader(
       'Content-Security-Policy',

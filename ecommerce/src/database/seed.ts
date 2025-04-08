@@ -19,9 +19,9 @@ const seedDatabase = async () => {
   const productRepository = dataSource.getRepository(Product);
 
   const products = [
-    { name: 'Laptop', price: 1000.0, description: 'High-performance laptop' },
-    { name: 'Smartphone', price: 500.0, description: 'Latest model smartphone' },
-    { name: 'Headphones', price: 150.0, description: 'Noise-cancelling headphones' },
+    { name: 'Laptop', price: 1000000.0, description: 'High-performance laptop', image: 'laptop.jpg' },
+    { name: 'Smartphone', price: 3000000.0, description: 'Latest model smartphone', image: 'smartphone.jpg' },
+    { name: 'Headphones', price: 150000.0, description: 'Noise-cancelling headphones', image: 'headphones.jpg' },
   ];
 
   console.log('Seeding database...');

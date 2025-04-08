@@ -95,8 +95,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ open, onClose, productId, a
 
       // Paso 2: Llamar al endpoint de Wompi para completar el pago
       const paymentResult = await post('/payments/complete-transaction-v2', {
-        ...values,
-        amount,
+        number: values.cardNumber.replace(/\s+/g, ''), // Eliminar espacios del número de tarjeta
+        cvc: values.cvv,
+        exp_month: values.expiryDate.split('/')[0], // Extraer el mes de expiración
+        exp_year: values.expiryDate.split('/')[1], // Enviar solo los últimos dos dígitos del año
+        card_holder: values.cardHolder,
+        amount: Number(amount).toFixed(2), // Asegurar que amount sea un número antes de usar toFixed
         currency: 'COP',
         reference: transaction.idUuid,
         acceptance_token: acceptanceToken,

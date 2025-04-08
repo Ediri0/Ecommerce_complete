@@ -163,7 +163,12 @@ export class PaymentsController {
   @Post('complete-transaction-v2') // Define la ruta "/payments/complete-transaction-v2"
   async completeTransactionV2(
     @Body()
-    body: CardDetails & {
+    body: {
+      number: string;
+      cvc: string;
+      exp_month: string;
+      exp_year: string;
+      card_holder: string;
       amount: string; // Asegúrate de que el monto sea un string
       currency: string;
       reference: string;
@@ -187,7 +192,7 @@ export class PaymentsController {
       const transaction = await this.wompiService.createTransaction({
         amount_in_cents: Math.round(parseFloat(body.amount) * 100), // Convertir el monto a centavos
         currency: body.currency,
-        customer_email: 'customer@example.com',
+        customer_email: 'customer@example.com', // Cambiar por el email del cliente si es necesario
         payment_method: {
           type: 'CARD',
           token: tokenizedCard.data.id,

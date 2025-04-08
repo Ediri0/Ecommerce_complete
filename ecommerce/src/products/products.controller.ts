@@ -12,7 +12,7 @@ export class ProductsController {
     if (result.isLeft()) {
       throw new HttpException(result.value, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    return result.value;
+    return result.value; 
   }
 
   @Get(':id')
@@ -23,4 +23,7 @@ export class ProductsController {
     }
     return result;
   }
+
+
+  
 }

@@ -16,4 +16,7 @@ export class Product {
 
   @Column({ default: 0 }) // Add default value for stock
   stock: number;
+
+  @Column({ nullable: true }) // Nuevo campo para el nombre de la imagen
+  image: string;
 }
