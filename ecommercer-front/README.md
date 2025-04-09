@@ -43,13 +43,8 @@ Abre [http://localhost:3000](http://localhost:3000) para verla en el navegador.
 
 ### `npm test`
 
-Ejecuta las pruebas en modo interactivo.\
-Consulta la sección sobre [pruebas](https://facebook.github.io/create-react-app/docs/running-tests) para más información.
-
 ### `npm run build`
 
-Construye la aplicación para producción en la carpeta `build`.\
-Optimiza React para el mejor rendimiento.
 
 ---
 

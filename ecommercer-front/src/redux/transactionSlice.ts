@@ -16,11 +16,11 @@ export const createTransaction = createAsyncThunk<Transaction, { productId: numb
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const initialState: TransactionState = { items: [], status: 'idle' };
+const initialState: TransactionState = JSON.parse(localStorage.getItem('transactions') || '{"items": [], "status": "idle"}');
 
 const transactionSlice = createSlice({
   name: 'transactions',
-  initialState: JSON.parse(localStorage.getItem('transactions') || '[]'),
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -30,7 +30,7 @@ const transactionSlice = createSlice({
       .addCase(createTransaction.fulfilled, (state, action) => {
         state.items.push(action.payload);
         state.status = 'succeeded';
-        localStorage.setItem('transactions', JSON.stringify(state.items)); // Persist state
+        localStorage.setItem('transactions', JSON.stringify(state)); // Persistir el estado
       })
       .addCase(createTransaction.rejected, (state) => {
         state.status = 'failed';

@@ -14,7 +14,7 @@ export const fetchProducts = createAsyncThunk<Product[]>('products/fetchProducts
   return data;
 });
 
-const initialState: ProductState = { items: [], status: 'idle', error: null };
+const initialState: ProductState = JSON.parse(localStorage.getItem('products') || '{"items": [], "status": "idle", "error": null}');
 
 const productSlice = createSlice({
   name: 'products',
@@ -24,7 +24,8 @@ const productSlice = createSlice({
       const { productId, quantity } = action.payload;
       const product = state.items.find((item) => item.id === productId);
       if (product) {
-        product.stock -= quantity; // Reduce el stock del producto
+        product.stock -= quantity;
+        localStorage.setItem('products', JSON.stringify(state)); // Persistir el estado
       }
     },
   },
@@ -37,6 +38,7 @@ const productSlice = createSlice({
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.items = action.payload;
         state.status = 'succeeded';
+        localStorage.setItem('products', JSON.stringify(state)); // Persistir el estado
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.status = 'failed';
