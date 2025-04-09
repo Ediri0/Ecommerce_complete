@@ -20,6 +20,7 @@ export class TransactionRepository implements ITransactionRepository {
     return this.repository.save({
       ...transaction,
       deliveryAddress: transaction.deliveryAddress, // Asegúrate de incluir este campo
+      productId: transaction.productId, // Asegúrate de incluir el campo productId
     });
   }
 }

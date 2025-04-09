@@ -16,26 +16,27 @@ export class TransactionsService {
   ) {}
 
   async createTransaction(
-    id: number | undefined,
+    productId: number,
     amount: number,
     currency: string = 'COP',
-    reference: string = `ref_${Date.now()}`, // Provide default reference
+    reference: string = `ref_${Date.now()}`,
   ): Promise<Either<string, ITransaction>> {
-    if (id !== undefined) {
-      const product = await this.productRepository.findById(id);
-      if (!product) {
-        return left('Product not found');
-      }
-      if (product.stock <= 0) {
-        return left('Product out of stock');
-      }
-      await this.productRepository.save({ ...product, stock: product.stock - 1 });
+    if (!productId) {
+      return left('Product ID is required'); // Validar que productId no sea 0 o undefined
     }
 
+    const product = await this.productRepository.findById(productId);
+    if (!product) {
+      return left('Product not found');
+    }
+    if (product.stock <= 0) {
+      return left('Product out of stock');
+    }
+
+    await this.productRepository.save({ ...product, stock: product.stock - 1 });
+
     const transaction: ITransaction = {
-      id,
-      idUuid: undefined,
-      productId: id,
+      productId, // Asegurar que productId sea válido
       amount,
       currency,
       reference,

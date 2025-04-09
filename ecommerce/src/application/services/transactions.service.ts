@@ -4,7 +4,6 @@ import { ITransaction, ITransactionRepository } from 'src/domain/transaction.int
 import { IWompiService } from 'src/domain/wompi.interface';
 import { Either, left, right } from 'src/utils/either';
 
-
 @Injectable()
 export class TransactionsService {
   constructor(
@@ -17,26 +16,27 @@ export class TransactionsService {
   ) {}
 
   async createTransaction(
-    productId: number | undefined,
+    productId: number | undefined, // Allow productId to be undefined
     amount: number,
     currency: string = 'COP',
     reference: string = `ref_${Date.now()}`,
   ): Promise<Either<string, ITransaction>> {
-    if (productId !== undefined) {
-      const product = await this.productRepository.findById(productId);
-      if (!product) {
-        return left('Product not found');
-      }
-      if (product.stock <= 0) {
-        return left('Product out of stock');
-      }
-      await this.productRepository.save({ ...product, stock: product.stock - 1 });
+    if (!productId) {
+      return left('Product ID is required'); // Handle undefined productId
     }
 
+    const product = await this.productRepository.findById(productId);
+    if (!product) {
+      return left('Product not found');
+    }
+    if (product.stock <= 0) {
+      return left('Product out of stock');
+    }
+
+    await this.productRepository.save({ ...product, stock: product.stock - 1 });
+
     const transaction: ITransaction = {
-      id: undefined,
-      idUuid: undefined,
-      productId,
+      productId, // Ensure productId is valid
       amount,
       currency,
       reference,

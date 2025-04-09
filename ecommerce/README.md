@@ -71,12 +71,3 @@ src/
 
 ## Resultados de Cobertura
 
-- **Cobertura Total**: 75.86%
-- **Cobertura de Funciones**: 66.66%
-- **Cobertura de Líneas**: 75%
-
----
-
-## Espacio para Pantallazos de Postman
-
-_Aquí puedes agregar capturas de pantalla de las pruebas realizadas en Postman para los endpoints mencionados._

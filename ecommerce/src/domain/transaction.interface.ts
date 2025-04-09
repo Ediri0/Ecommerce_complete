@@ -4,7 +4,7 @@
 export interface ITransaction {
   id?: number; // Revertir el tipo de `id` a number
   idUuid?: string; // Mantener el campo idUuid
-  productId?: number;
+  productId: number; // Campo para asociar el producto con la transacción
   amount: number;
   currency: string;
   reference: string;

@@ -19,4 +19,7 @@ export class TransactionEntity {
 
   @Column({ nullable: true })
   deliveryAddress?: string; // Campo para la dirección de entrega
+
+  @Column()
+  productId: number; // Campo para asociar el producto con la transacción
 }

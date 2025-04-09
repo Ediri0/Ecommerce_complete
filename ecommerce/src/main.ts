@@ -34,7 +34,7 @@ async function bootstrap() {
     exposedHeaders: ['Content-Length', 'X-CSRF-TOKEN'], // Exponer encabezados necesarios
   });
 
-/*   app.use(cookieParser());
+  app.use(cookieParser());
   app.use(helmet());
   app.use(
     csurf({
@@ -44,7 +44,7 @@ async function bootstrap() {
         sameSite: 'strict',
       },
     }),
-  ); */
+  );
 
   // Sirve archivos estáticos desde la carpeta "public/images"
   app.use('/images', express.static(path.join(__dirname, '../public/images')));
