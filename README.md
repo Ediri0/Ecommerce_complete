@@ -128,17 +128,20 @@ Ecommerce_complete/
 
 ---
 
-## Espacio para Pantallazos de Postman
+## Funcionalidades Implementadas
 
-_Aquí puedes agregar capturas de pantalla de las pruebas realizadas en Postman para los endpoints mencionados._
+- **Resiliencia para recuperar progreso en caso de refrescar la página**: El estado de las transacciones y productos se guarda automáticamente en el almacenamiento local del navegador y se restaura al recargar la página.
+
+---
+
+## Colección de Postman
+
+Puedes acceder a la colección de Postman con los endpoints del proyecto en el siguiente enlace:
+
+[Postman Collection](https://www.postman.com/supply-engineer-56601928/ecommerce/collection/6x0i7z5/ecommerce?action=share&creator=34629923)
 
 ---
 
 ## Funcionalidades No Implementadas
 
-1. **Validación de tarjetas MasterCard y VISA con detección de logos.**
-2. **Resiliencia para recuperar progreso en caso de refrescar la página.**
-3. **Despliegue en AWS.**
-4. **Documentación Swagger o Postman Collection.**
-5. **OWASP alignments y uso de HTTPS.**
-6. **Diseño completamente responsivo para múltiples navegadores.**
+2. **Despliegue en AWS.**
