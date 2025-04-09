@@ -1,8 +1,8 @@
+import { CardDetails, IWompiService } from '@domain/wompi.interface';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 import * as fs from 'fs';
 import * as path from 'path';
-import { IWompiService, CardDetails } from '../../domain/wompi.interface';
 
 @Injectable()
 export class WompiService implements IWompiService {

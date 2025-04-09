@@ -28,12 +28,13 @@ async function bootstrap() {
   const port = configService.get<number>('PORT') ?? 3000;
 
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:3000', // Permitir solicitudes desde el frontend
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
+    credentials: true, // Permitir el envío de cookies y encabezados de autenticación
+    exposedHeaders: ['Content-Length', 'X-CSRF-TOKEN'], // Exponer encabezados necesarios
   });
 
-  app.use(cookieParser());
+/*   app.use(cookieParser());
   app.use(helmet());
   app.use(
     csurf({
@@ -43,7 +44,7 @@ async function bootstrap() {
         sameSite: 'strict',
       },
     }),
-  );
+  ); */
 
   // Sirve archivos estáticos desde la carpeta "public/images"
   app.use('/images', express.static(path.join(__dirname, '../public/images')));

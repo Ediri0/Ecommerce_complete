@@ -1,46 +1,64 @@
-# Getting Started with Create React App
+# E-Commerce Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este es el frontend de una aplicación de comercio electrónico desarrollada con React. Proporciona una interfaz de usuario para explorar productos, realizar compras y gestionar transacciones.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Tecnologías Utilizadas
+
+- **React**: Biblioteca para construir interfaces de usuario.
+- **Redux Toolkit**: Manejo del estado global de la aplicación.
+- **TypeScript**: Superset de JavaScript que añade tipado estático.
+- **Ant Design** y **Material-UI**: Librerías de componentes UI para React.
+- **Axios**: Cliente HTTP para realizar solicitudes a la API.
+- **Jest** y **Testing Library**: Herramientas para pruebas unitarias y de integración.
+
+---
+
+## Estructura del Proyecto
+
+```
+src/
+├── api/                # Configuración de Axios y métodos reutilizables
+├── components/         # Componentes reutilizables como Navbar, ProductList, etc.
+├── pages/              # Páginas principales como NotFound y PaymentResult
+├── redux/              # Configuración de Redux y slices para manejar el estado
+├── types/              # Definiciones de tipos TypeScript
+├── App.tsx             # Componente principal de la aplicación
+├── index.tsx           # Punto de entrada de la aplicación
+├── setupTests.ts       # Configuración para pruebas
+└── index.css           # Estilos globales
+```
+
+---
+
+## Scripts Disponibles
+
+En el directorio del proyecto, puedes ejecutar:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Inicia la aplicación en modo de desarrollo.\
+Abre [http://localhost:3000](http://localhost:3000) para verla en el navegador.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Ejecuta las pruebas en modo interactivo.\
+Consulta la sección sobre [pruebas](https://facebook.github.io/create-react-app/docs/running-tests) para más información.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Construye la aplicación para producción en la carpeta `build`.\
+Optimiza React para el mejor rendimiento.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Resultados de Cobertura
 
-### `npm run eject`
+- **Cobertura Total**: 80% (aproximado)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+---
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Funcionalidades No Implementadas
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+3. **Despliegue en AWS.**

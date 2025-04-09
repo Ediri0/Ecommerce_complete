@@ -1,22 +1,23 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
-export class Product {
+@Entity('products')
+export class ProductEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   name: string;
 
-  @Column('decimal', { precision: 10, scale: 2 })
+  @Column('decimal')
   price: number;
 
   @Column()
   description: string;
 
-  @Column({ default: 0 }) // Add default value for stock
+  @Column()
   stock: number;
 
-  @Column({ nullable: true }) // Nuevo campo para el nombre de la imagen
+  @Column( { nullable: true })
   image: string;
+
 }

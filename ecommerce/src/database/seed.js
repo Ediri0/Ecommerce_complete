@@ -1,6 +1,7 @@
-import { ProductEntity } from '../../src/domain/entities/product.entity'; // Asegúrate de que la ruta sea correcta
-import 'dotenv/config'; // Carga las variables de entorno desde el archivo .env
-import { DataSource } from 'typeorm';
+"use strict";
+const { DataSource } = require('typeorm');
+const { ProductEntity } = require('../../src/domain/entities/product.entity'); // Asegúrate de que la ruta sea correcta
+require('dotenv/config'); // Carga las variables de entorno desde el archivo .env
 
 const seedDatabase = async () => {
   const dataSource = new DataSource({
@@ -22,9 +23,9 @@ const seedDatabase = async () => {
     const productRepository = dataSource.getRepository(ProductEntity);
 
     const products = [
-      { name: 'Laptop', price: 1000000.0, description: 'High-performance laptop', stock: 1000, image: '1' },
-      { name: 'Smartphone', price: 3000000.0, description: 'Latest model smartphone', stock: 1000, image: '2' },
-      { name: 'Headphones', price: 150000.0, description: 'Noise-cancelling headphones', stock: 1000, image: '3' },
+      { name: 'Laptop', price: 1000000.0, description: 'High-performance laptop', stock: 1000, image: 'laptop.webp' },
+      { name: 'Smartphone', price: 3000000.0, description: 'Latest model smartphone', stock: 1000, image: 'cellphone.jpg' },
+      { name: 'Headphones', price: 150000.0, description: 'Noise-cancelling headphones', stock: 1000, image: 'headphones.png' },
     ];
 
     console.log('Seeding database...');

@@ -3,7 +3,8 @@ export interface IProduct {
   name: string;
   price: number;
   description: string;
-  stock: number; // Add stock property
+  stock: number;
+
 }
 
 export interface IProductRepository {
@@ -11,3 +12,5 @@ export interface IProductRepository {
   findAll(): Promise<IProduct[]>;
   save(product: IProduct): Promise<IProduct>; // Add save method
 }
+
+// Ensure this interface defines the core domain logic for products.

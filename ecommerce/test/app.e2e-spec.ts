@@ -34,4 +34,22 @@ describe('AppController (e2e)', () => {
     expect(transactionResponse.status).toBe(201);
     expect(transactionResponse.body.status).toBe('PENDING');
   });
+
+  it('should create a transaction with delivery address', async () => {
+    const productResponse = await request(app.getHttpServer()).get('/products');
+    const product = productResponse.body[0];
+
+    const transactionResponse = await request(app.getHttpServer())
+      .post('/transactions')
+      .send({
+        productId: product.id,
+        amount: product.price,
+        currency: 'COP',
+        reference: 'test-ref',
+        deliveryAddress: '123 Main St', // Incluye la dirección de entrega
+      });
+
+    expect(transactionResponse.status).toBe(201);
+    expect(transactionResponse.body.deliveryAddress).toBe('123 Main St'); // Verifica el campo
+  });
 });

@@ -9,8 +9,7 @@ export interface ITransaction {
   currency: string;
   reference: string;
   status: string;
-  deliveryAddress?: string;
-  
+  deliveryAddress?: string; // Campo para la dirección de entrega
 }
 
 export interface ITransactionRepository {

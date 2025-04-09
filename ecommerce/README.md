@@ -1,15 +1,46 @@
 # E-Commerce Backend
 
-This is the backend for an e-commerce application built with NestJS. It handles product management, transactions, and integration with the Wompi payment gateway.
+Este es el backend de una aplicación de comercio electrónico desarrollado con NestJS. Maneja la gestión de productos, transacciones y la integración con la pasarela de pagos Wompi.
 
-## Setup
+---
 
-1. Install dependencies:
+## Tecnologías Utilizadas
+
+- **NestJS**: Framework para construir aplicaciones backend escalables.
+- **TypeORM**: ORM para manejar la base de datos.
+- **PostgreSQL**: Base de datos relacional utilizada.
+- **Axios**: Cliente HTTP para interactuar con la API de Wompi.
+- **CSRF Protection** y **Helmet**: Seguridad adicional para proteger contra ataques CSRF y mejorar la seguridad HTTP.
+- **Jest**: Framework para pruebas unitarias y de integración.
+
+---
+
+## Estructura del Proyecto
+
+```
+src/
+├── application/        # Lógica de negocio (servicios)
+├── domain/             # Interfaces y contratos
+├── infrastructure/     # Implementaciones específicas (repositorios, servicios externos)
+├── products/           # Módulo de productos
+├── transactions/       # Módulo de transacciones
+├── payments/           # Módulo de pagos
+├── images/             # Controlador para servir imágenes
+├── utils/              # Utilidades como Either para manejo de errores
+├── app.module.ts       # Módulo principal de la aplicación
+└── main.ts             # Punto de entrada de la aplicación
+```
+
+---
+
+## Configuración del Proyecto
+
+1. Instalar dependencias:
    ```bash
    npm install
    ```
 
-2. Configure the `.env` file:
+2. Configurar el archivo `.env`:
    ```properties
    DB_HOST=localhost
    DB_PORT=5432
@@ -22,19 +53,30 @@ This is the backend for an e-commerce application built with NestJS. It handles 
    WOMPI_PRIVATE_KEY=your_private_key
    ```
 
-3. Run the development server:
+3. Ejecutar el servidor en modo desarrollo:
    ```bash
    npm run start:dev
    ```
 
-## Endpoints
+---
 
-- **GET /products**: Fetch all products.
-- **POST /transactions**: Create a new transaction.
-- **POST /payments/complete-transaction**: Complete a transaction with Wompi.
-- **POST /payments/complete-transaction-v2**: Complete a transaction with tokens from the frontend.
+## Scripts Disponibles
 
-## Notes
+- **`npm run start`**: Inicia el servidor en modo producción.
+- **`npm run start:dev`**: Inicia el servidor en modo desarrollo con recarga automática.
+- **`npm run test`**: Ejecuta las pruebas unitarias.
+- **`npm run test:cov`**: Genera un reporte de cobertura de pruebas.
 
-- Ensure the database is running and properly configured.
-- Logs are stored in the `logs` directory.
+---
+
+## Resultados de Cobertura
+
+- **Cobertura Total**: 75.86%
+- **Cobertura de Funciones**: 66.66%
+- **Cobertura de Líneas**: 75%
+
+---
+
+## Espacio para Pantallazos de Postman
+
+_Aquí puedes agregar capturas de pantalla de las pruebas realizadas en Postman para los endpoints mencionados._

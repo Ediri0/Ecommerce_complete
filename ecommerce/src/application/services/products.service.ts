@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { IProductRepository, IProduct } from '../domain/product.interface';
-import { Either, left, right } from '../utils/either';
+import { IProduct, IProductRepository } from 'src/domain/product.interface';
+import { Either, left, right } from 'src/utils/either';
+
 
 @Injectable()
 export class ProductsService {
@@ -10,8 +11,7 @@ export class ProductsService {
   ) {}
 
   async findAll(): Promise<IProduct[]> {
-    const result = await this.productRepository.findAll();
-    return result; // Return the list of products directly
+    return await this.productRepository.findAll();
   }
 
   async findOne(id: number): Promise<IProduct> {
@@ -19,7 +19,7 @@ export class ProductsService {
     if (!product) {
       throw new Error(`Product with id ${id} not found`);
     }
-    return product; // Ensure a return statement exists
+    return product;
   }
 
   async updateStock(productId: number, quantity: number): Promise<Either<string, IProduct>> {

@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { ITransactionRepository, ITransaction } from '../domain/transaction.interface';
-import { IProductRepository } from '../domain/product.interface';
+import { IProductRepository, IProduct } from '../domain/product.interface';
 import { IWompiService } from '../domain/wompi.interface';
 import { Either, left, right } from '../utils/either';
 
@@ -12,64 +12,63 @@ export class TransactionsService {
     @Inject('IProductRepository')
     private readonly productRepository: IProductRepository,
     @Inject('IWompiService')
-    private readonly wompiService: IWompiService, // Asegurar consistencia
+    private readonly wompiService: IWompiService,
   ) {}
 
   async createTransaction(
-    productId: number | undefined, // Allow productId to be undefined
+    id: number | undefined,
     amount: number,
-    currency: string,
-    reference: string,
-  ): Promise<ITransaction> {
-    if (productId !== undefined) {
-      const product = await this.productRepository.findById(productId);
+    currency: string = 'COP',
+    reference: string = `ref_${Date.now()}`, // Provide default reference
+  ): Promise<Either<string, ITransaction>> {
+    if (id !== undefined) {
+      const product = await this.productRepository.findById(id);
       if (!product) {
-        throw new Error('Product not found');
+        return left('Product not found');
       }
-
       if (product.stock <= 0) {
-        throw new Error('Product out of stock');
+        return left('Product out of stock');
       }
-
-      product.stock -= 1;
-      await this.productRepository.save(product);
+      await this.productRepository.save({ ...product, stock: product.stock - 1 });
     }
 
     const transaction: ITransaction = {
-      id: undefined,
+      id,
       idUuid: undefined,
-      productId,
+      productId: id,
       amount,
-      currency: currency || 'COP', // Asignar un valor predeterminado si currency es nulo o indefinido
-      reference: reference || `ref_${Date.now()}`, // Asignar un valor predeterminado si reference es nulo o indefinido
+      currency,
+      reference,
       status: 'PENDING',
     };
 
-    const result = await this.transactionRepository.save(transaction);
-    if (!result) {
-      throw new Error('Error saving transaction');
+    try {
+      const result = await this.transactionRepository.save(transaction);
+      return right(result);
+    } catch (error) {
+      return left('Error saving transaction');
     }
-    return result;
   }
 
   async createTransactionWithPayment(
-    productId: number,
+    id: number,
     amount: number,
     token: string,
-    deliveryAddress: string,
+    deliveryAddress: string, // Asegúrate de recibir este parámetro
   ): Promise<Either<string, ITransaction>> {
-    const product = await this.productRepository.findById(productId);
+    const product = await this.productRepository.findById(id);
     if (!product || product.stock <= 0) {
       return left('Product not available or out of stock');
     }
 
     const transaction: ITransaction = {
-      productId,
+      id,
+      productId: id,
       amount,
-      currency: 'COP', 
-      reference: `order_${productId}_${Date.now()}`,
+      currency: 'COP',
+      reference: `order_${id}_${Date.now()}`,
       status: 'PENDING',
-      deliveryAddress,
+      deliveryAddress, // Incluye la dirección de entrega
     };
     const savedTransaction = await this.transactionRepository.save(transaction);
 
@@ -77,11 +76,11 @@ export class TransactionsService {
       const acceptanceTokens = await this.wompiService.getAcceptanceTokens();
 
       const wompiResponse = await this.wompiService.createTransaction({
-        amount_in_cents: Math.round(amount * 100), // Asegúrate de que amount sea un número decimal válido
+        amount_in_cents: Math.round(amount * 100),
         currency: 'COP',
         customer_email: 'customer@example.com',
         payment_method: { type: 'CARD', token, installments: 1 },
-        reference: `order_${productId}_${Date.now()}`,
+        reference: `order_${id}_${Date.now()}`,
         payment_description: `Compra de ${product.name}`,
         acceptance_token: acceptanceTokens.acceptance_token,
         accept_personal_auth: acceptanceTokens.accept_personal_auth,
@@ -91,8 +90,11 @@ export class TransactionsService {
       await this.transactionRepository.save(savedTransaction);
 
       if (wompiResponse.data.status === 'APPROVED') {
-        product.stock -= 1;
-        await this.productRepository.save(product);
+        const updatedProduct: IProduct = {
+          ...product,
+          stock: product.stock - 1,
+        };
+        await this.productRepository.save(updatedProduct);
       }
 
       return right(savedTransaction);
@@ -116,7 +118,7 @@ export class TransactionsService {
       const savedTransaction = await this.transactionRepository.save(transaction);
       return right(savedTransaction);
     } catch (error) {
-      return left(`Error saving transaction: ${error.message}`);
+      return left(`Error saving transaction: ${(error as Error).message}`);
     }
   }
 
@@ -126,19 +128,25 @@ export class TransactionsService {
       return left('Transaction not found');
     }
 
-    transaction.status = status;
+    transaction.status = status; // Actualiza el estado
 
     if (status === 'APPROVED' && transaction.productId) {
       const product = await this.productRepository.findById(transaction.productId);
       if (product) {
-        product.stock -= 1; // Reducir el stock del producto
-        await this.productRepository.save(product);
+        const updatedProduct: IProduct = {
+          ...product,
+          stock: product.stock - 1,
+        };
+        await this.productRepository.save(updatedProduct);
       }
     }
 
     try {
       const updatedTransaction = await this.transactionRepository.save(transaction);
-      return right(updatedTransaction);
+      return right({
+        ...updatedTransaction,
+        productId: transaction.productId, // Asegura que productId esté incluido
+      });
     } catch (error) {
       return left(`Error updating transaction: ${error.message}`);
     }

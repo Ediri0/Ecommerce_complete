@@ -5,16 +5,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsService } from './application/products.service';
 import { TransactionsService } from './application/transactions.service';
 
-import { WompiService } from './infrastructure/wompi/wompi.service';
-import { TransactionRepository } from './infrastructure/typeorm/transaction.repository';
-import { ProductRepository } from './infrastructure/typeorm/product.repository';
+import { TransactionEntity } from './domain/entities/transaction.entity';
+import { ProductEntity } from './domain/entities/product.entity';
 
-import { TransactionsController } from './transactions/transactions.controller';
-import { ProductsController } from './products/products.controller';
-import { PaymentsController } from './payments/payments.controller';
+import { ProductsController } from './infrastructure/controllers/products.controller';
+import { TransactionsController } from './infrastructure/controllers/transactions.controller';
+import { PaymentsController } from '@controllers/payments.controller';
+import { ImagesController } from './infrastructure/controllers/images.controller';
 
-import { TransactionEntity } from './transactions/transaction.entity';
-import { Product } from './products/product.entity';
+import { WompiService } from './infrastructure/adapters/wompi/wompi.service';
+import { TransactionRepository } from '@adapters/typeorm/transaction.repository';
+import { ProductRepository } from '@adapters/typeorm/product.repository';
 
 @Module({
   imports: [
@@ -30,17 +31,18 @@ import { Product } from './products/product.entity';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [TransactionEntity, Product],
+        entities: [TransactionEntity, ProductEntity],
         synchronize: true,
       }),
     }),
 
-    TypeOrmModule.forFeature([TransactionEntity, Product]),
+    TypeOrmModule.forFeature([TransactionEntity, ProductEntity]),
   ],
   controllers: [
     TransactionsController,
     ProductsController,
     PaymentsController,
+    ImagesController,
   ],
   providers: [
     TransactionsService,

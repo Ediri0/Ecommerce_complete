@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Get, Param, HttpException, HttpStatus } from '@nestjs/common';
-import { TransactionsService } from '../application/transactions.service';
-import { ITransaction } from '../domain/transaction.interface';
+import { TransactionsService } from '@application/transactions.service';
+import { ITransaction } from '@domain/transaction.interface';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -23,17 +23,18 @@ export class TransactionsController {
   async createTransaction(
     @Body() body: { productId: number; amount: number; currency: string; reference: string },
   ): Promise<ITransaction> {
-    try {
-      return await this.transactionsService.createTransaction(
-        body.productId,
-        body.amount,
-        body.currency,
-        body.reference,
-      );
-    } catch (error) {
-      this.handleTransactionError(error);
-      throw error;
+    const result = await this.transactionsService.createTransaction(
+      body.productId,
+      body.amount,
+      body.currency,
+      body.reference,
+    );
+
+    if (result.isLeft()) {
+      throw new HttpException(result.value, HttpStatus.BAD_REQUEST);
     }
+
+    return result.value;
   }
 
   @Post('pay')

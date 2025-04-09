@@ -1,9 +1,8 @@
+import { TransactionsService } from '@application/transactions.service';
+import { CardDetails, IWompiService } from '@domain/wompi.interface';
 import { Controller, Post, Body, Get, Param, HttpException, HttpStatus, Inject } from '@nestjs/common';
-import { IWompiService } from '../domain/wompi.interface'; // Use the interface
-import { TransactionsService } from '../application/transactions.service';
-import { CardDetails } from '../domain/wompi.interface'; // Import CardDetails
 
-@Controller('payments') // Define the base route "/payments"
+@Controller('payments') // La ruta base debe ser "payments"
 export class PaymentsController {
   constructor(
     @Inject('IWompiService') private readonly wompiService: IWompiService, // Inject using the interface
@@ -169,7 +168,7 @@ export class PaymentsController {
       exp_month: string;
       exp_year: string;
       card_holder: string;
-      amount: string; // Asegúrate de que el monto sea un string
+      amount: string;
       currency: string;
       reference: string;
       acceptance_token: string;

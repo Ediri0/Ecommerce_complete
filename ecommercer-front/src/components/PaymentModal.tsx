@@ -136,22 +136,26 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ open, onClose, productId, a
   return (
     <>
       <Modal
-        title="Completa tu pago"
+        title={<Typography.Title level={3} style={{ textAlign: 'center', margin: 0 }}>Completa tu pago</Typography.Title>}
         open={open && !transactionSummary}
         onCancel={onClose}
         footer={null}
         className="payment-modal-container"
+        centered
       >
         <div className="payment-modal">
-          <div className="user-details">
-            <Text strong>Nombre:</Text> Pepito Pérez
-            <br />
-            <Text strong>Correo:</Text> pepito_perez@example.com
-            <br />
-            <Text strong>Teléfono:</Text> 3107654321
+          <div className="user-details" style={{ marginBottom: '16px', textAlign: 'center' }}>
+            <Typography.Text strong style={{ display: 'block', fontSize: '16px' }}>Nombre: Pepito Pérez</Typography.Text>
+            <Typography.Text strong style={{ display: 'block', fontSize: '16px' }}>Correo: pepito_perez@example.com</Typography.Text>
+            <Typography.Text strong style={{ display: 'block', fontSize: '16px' }}>Teléfono: 3107654321</Typography.Text>
           </div>
 
-          <Form form={form} layout="vertical" onFinish={handleSubmit}>
+          <Form
+            form={form}
+            layout="vertical"
+            onFinish={handleSubmit}
+            style={{ maxWidth: '400px', margin: '0 auto' }}
+          >
             <Form.Item
               label="Número de tarjeta"
               name="cardNumber"
@@ -210,20 +214,28 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ open, onClose, productId, a
               <Input placeholder="3107654321" />
             </Form.Item>
 
-            <div className="terms-section">
-              <Checkbox
-                onChange={(e) => setTermsAccepted(e.target.checked)}
-                className="terms-checkbox"
-              >
-                Acepto los <Link href={privacyPolicyLink} target="_blank">términos y condiciones</Link>
-              </Checkbox>
-              <Checkbox
-                onChange={(e) => setPersonalDataAccepted(e.target.checked)}
-                className="terms-checkbox"
-              >
-                Autorizo el uso de mis datos personales según la{' '}
-                <Link href={dataUsagePolicyLink} target="_blank">política de privacidad</Link>
-              </Checkbox>
+            <div className="terms-section" style={{ marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                <Checkbox
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                  className="terms-checkbox"
+                  style={{ marginRight: '8px' }}
+                />
+                <Typography.Text>
+                  Acepto los <Link href={privacyPolicyLink} target="_blank">términos y condiciones</Link>
+                </Typography.Text>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Checkbox
+                  onChange={(e) => setPersonalDataAccepted(e.target.checked)}
+                  className="terms-checkbox"
+                  style={{ marginRight: '8px' }}
+                />
+                <Typography.Text>
+                  Autorizo el uso de mis datos personales según la{' '}
+                  <Link href={dataUsagePolicyLink} target="_blank">política de privacidad</Link>
+                </Typography.Text>
+              </div>
             </div>
 
             {error && (
@@ -233,6 +245,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ open, onClose, productId, a
                 type="error"
                 showIcon
                 className="error-alert"
+                style={{ marginBottom: '16px' }}
               />
             )}
             {loading && <Spin size="large" style={{ display: 'block', margin: '16px auto' }} />}
@@ -244,6 +257,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ open, onClose, productId, a
                 block
                 disabled={!termsAccepted || !personalDataAccepted || loading}
                 className="submit-button"
+                style={{ marginBottom: '8px' }}
               >
                 Pagar
               </Button>
@@ -259,7 +273,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ open, onClose, productId, a
 
       {transactionSummary && (
         <Modal
-          title="Resumen de la Transacción"
+          title={<Typography.Title level={4} style={{ textAlign: 'center', margin: 0 }}>Resumen de la Transacción</Typography.Title>}
           open={!!transactionSummary}
           onCancel={() => {
             setTransactionSummary(null);
@@ -267,12 +281,18 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ open, onClose, productId, a
           }}
           footer={null}
           className="transaction-summary-modal"
+          centered
         >
-          <div className="transaction-summary">
+          <div className="transaction-summary" style={{ textAlign: 'center' }}>
             <div
               className={`status-icon ${
                 transactionSummary.status === 'APPROVED' ? 'success' : 'failure'
               }`}
+              style={{
+                fontSize: '48px',
+                marginBottom: '16px',
+                color: transactionSummary.status === 'APPROVED' ? 'green' : 'red',
+              }}
             >
               {transactionSummary.status === 'APPROVED' ? '✔️' : '❌'}
             </div>

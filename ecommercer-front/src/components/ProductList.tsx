@@ -40,13 +40,10 @@ const ProductList: React.FC = () => {
           <Col xs={24} sm={12} md={8} lg={6} key={product.id}>
             <Card
               hoverable
-              cover={<img alt={product.name} src={`http://localhost:3020/images/${product.image}`} />}
+              cover={<img alt={product.name} src={`/images/${product.image}`} className='image' />} // Cambiar a ruta relativa
               actions={[
                 <Button type="primary" onClick={() => handleOpenModal(product)}>
                   Comprar
-                </Button>,
-                <Button type="primary" onClick={() => handleOpenModal(product)}>
-                  Pay with Credit Card
                 </Button>,
               ]}
             >

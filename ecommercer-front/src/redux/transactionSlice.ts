@@ -15,6 +15,7 @@ export const createTransaction = createAsyncThunk<Transaction, { productId: numb
   },
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const initialState: TransactionState = { items: [], status: 'idle' };
 
 const transactionSlice = createSlice({

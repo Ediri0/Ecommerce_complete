@@ -16,6 +16,14 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@adapters/*": ["src/infrastructure/adapters/*"],
+      "@controllers/*": ["src/infrastructure/controllers/*"], // Asegúrate de que esta ruta sea correcta
+      "@domain/*": ["src/domain/*"],
+      "@application/*": ["src/application/*"],
+      "@products/*": ["src/products/*"],
+      "@transactions/*": ["src/transactions/*"]
+    }
   }
 }
